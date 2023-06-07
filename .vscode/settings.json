@@ -1,0 +1,5 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "./tamagotchi/tamagotchi-io/Cargo.toml"
+    ]
+}
