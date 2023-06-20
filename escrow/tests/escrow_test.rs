@@ -1,4 +1,4 @@
-use escrow_io::{InitEscrow, EscrowAction, EscrowEvent};
+use escrow::{InitEscrow, EscrowAction, EscrowEvent};
 use gtest::{Log, Program, System};
 const BUYER: u64 = 100;
 const SELLER: u64 = 101;
@@ -54,6 +54,44 @@ fn deposit_failures() {
         EscrowAction::Deposit,
         PRICE,
     );
+    assert!(res.main_failed());
+}
+
+#[test]
+fn confirm_delivery() {
+    let sys = System::new();
+    init_escrow(&sys);
+    let escrow = sys.get_program(ESCROW_ID);
+
+    sys.mint_to(BUYER, PRICE);
+    escrow.send_with_value(
+        BUYER,
+        EscrowAction::Deposit,
+        PRICE,
+    );
+
+    let res = escrow.send(
+        SELLER,
+        EscrowAction::ConfirmDelivery,
+    );
+    let log = Log::builder().dest(SELLER).payload(EscrowEvent::DeliveryConfirmed);
+    assert!(res.contains(&log));
+
+    sys.claim_value_from_mailbox(SELLER);
+    assert_eq!(sys.balance_of(SELLER), PRICE);
+    
+}
+
+#[test]
+fn confirm_delivery_failures() {
+    let sys = System::new();
+    init_escrow(&sys);
+    let escrow = sys.get_program(ESCROW_ID);
+    // only seller can confirm delivery
+    let res = escrow.send(BUYER, EscrowAction::ConfirmDelivery);
+    assert!(res.main_failed());
+    // must fail since the state must be `AwaitingDelivery`
+    let res = escrow.send(SELLER, EscrowAction::ConfirmDelivery);
     assert!(res.main_failed());
 }
 

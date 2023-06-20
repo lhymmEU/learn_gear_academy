@@ -1,7 +1,7 @@
 #![no_std]
 
 use gmeta::{In, InOut, Metadata};
-use gstd::{msg, prelude::*, ActorId};
+use gstd::{prelude::*, ActorId};
 use scale_info::TypeInfo;
 
 pub struct ProgramMetadata;
@@ -55,29 +55,29 @@ pub struct Escrow {
     pub state: EscrowState,
 }
 
-impl Escrow {
-    pub fn deposit(&mut self) {
-        assert_eq!(
-            self.state,
-            EscrowState::AwaitingPayment,
-            "State must be AwaitingPayment"
-        );
-        assert_eq!(
-            self.buyer,
-            msg::source(),
-            "The message sender must be a buyer"
-        );
-        assert_eq!(
-            self.price,
-            msg::value(),
-            "The attached value must be equal to set price"
-        );
+// impl Escrow {
+//     pub fn deposit(&mut self) {
+//         assert_eq!(
+//             self.state,
+//             EscrowState::AwaitingPayment,
+//             "State must be AwaitingPayment"
+//         );
+//         assert_eq!(
+//             self.buyer,
+//             msg::source(),
+//             "The message sender must be a buyer"
+//         );
+//         assert_eq!(
+//             self.price,
+//             msg::value(),
+//             "The attached value must be equal to set price"
+//         );
 
-        self.state = EscrowState::AwaitingDelivery;
-        msg::reply(EscrowEvent::FundsDeposited, 0).expect("Error in reply EscrowEvent::FundsDeposited");
-    }
+//         self.state = EscrowState::AwaitingDelivery;
+//         msg::reply(EscrowEvent::FundsDeposited, 0).expect("Error in reply EscrowEvent::FundsDeposited");
+//     }
 
-    pub fn confirm_delivery(&mut self) {
+//     pub fn confirm_delivery(&mut self) {
 
-    }
-}
+//     }
+// }
