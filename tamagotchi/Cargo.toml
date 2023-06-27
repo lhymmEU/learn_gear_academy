@@ -9,10 +9,11 @@ edition = "2021"
 gstd = { git = "https://github.com/gear-tech/gear.git", features = ["debug"], branch = "academy-v0.1.0" }
 parity-scale-codec = { version = "3", default-features = false }
 scale-info = { version = "2", default-features = false }
+tamagotchi-io = { path = "./tamagotchi-io" }
 
 [build-dependencies]
 gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", features = ["wasm-opt"], branch = "academy-v0.1.0" }
-tamagotchi-io = { path = "tamagotchi-io" }
+tamagotchi-io = { path = "./tamagotchi-io" }
 
 [dev-dependencies]
 gtest = { git = "https://github.com/gear-tech/gear.git", branch = "academy-v0.1.0" }

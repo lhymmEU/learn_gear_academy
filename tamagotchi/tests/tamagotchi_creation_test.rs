@@ -1,5 +1,5 @@
 use gtest::{Log, Program, System};
-use tamagotchi::{TmgAction, TmgEvent};
+use tamagotchi_io::{TmgAction, TmgEvent};
 
 #[test]
 fn creation_test() {
